@@ -2,7 +2,7 @@
  //TODO: define other sensor inputs
 
 unsigned long targetTime=0;
-const unsigned long interval=9600; //TODO: How fast should we read
+const unsigned long interval=500; //TODO: How fast should we read
 
 int potPin = A5;
 int rotPin = A4;
@@ -25,29 +25,28 @@ void setup(){
   Serial.begin(115200);
 }
 void loop(){
-//  if(millis()>=targetTime){
-//    targetTime= millis()+interval;
+    btnState = digitalRead(buttonPin);
+    prVal = analogRead(potPin);
+    pwWval = (255./1023.) * prVal; // not used
+    String x = String(prVal);
+    rrVal = analogRead(rotPin);
+    rwWval = (255./1023.) * rrVal; // not used
+    String y = String(rrVal);
+  if(millis()>=targetTime){
+    targetTime= millis()+interval;
+    if (btnState == HIGH) {
+    } else {
+	Serial.println("rst"); // button is pressed
+    }
 //    readValue = analogRead(potPin);
 //    writeValue = (255./1023.) * readValue;
     //Serial.println(analogRead(SENSORPINA));
-    btnState = digitalRead(buttonPin);
+    //Serial.println(prVal);
 
-    if (btnState == HIGH) {
-        //Serial.println("reset");
-    } else {
-	Serial.println("reset");
-    }
-
-    prVal = analogRead(potPin);
-    pwWval = (255./1023.) * prVal; // not used
-    Serial.println(prVal);
-
-    rrVal = analogRead(rotPin);
-    rwWval = (255./1023.) * rrVal; // not used
-    Serial.println(rrVal);
+    //Serial.println(rrVal);
+    Serial.println(x + "," + y);
 //    Serial.println("rotPin", rrVal);
 //    analogWrite(ledPin, pwWval);
-    delay(100);
     //Serial.println(analogRead(prVal));
 
 
@@ -62,7 +61,7 @@ void loop(){
      //TODO: send the string over serial
 
 
-//  }
+  }
   // TODO: Detect if you want to reset the screen(shake the etch-a-sketch)
   // TODO: write the reset message(see server.js) to the serial port
 
